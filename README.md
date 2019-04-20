@@ -1,6 +1,13 @@
 # IntroBot
 Python Discord bot that will join members in a voice channel and play short intros
 
+## Capabilities
+Capable of handling multiple guilds
+Upload your own .mp3 file to be your intro
+Change your intro volume
+Reset your intro timer
+
+## Prerequisites
 Requires >= python3.5
 
 invite link:
@@ -10,8 +17,7 @@ text permissions: send messages
 
 voice permissions: connect, speak
 
-
-## Configure
+## Install
 mkdir IntroBot && cd IntroBot
 
 nano auth.json
@@ -21,7 +27,6 @@ nano auth.json
 }
 
 git clone https://github.com/collinxsmith1/IntroBot.git
-
 
 cd IntroBot
 
@@ -33,12 +38,17 @@ source env/bin/activate
 
 pip install -r requirements.txt
 
-## Modify introbot.py
+## Configure introbot.py for your discord servers
 v_ids should be list of voice channel IDs that you want intros enabled in
 
-tdelta is default at 3600 seconds
+tdelta is default at 3600 seconds (this avoids spamming of intros)
 
-## Running
-
+## Running bot
 chmod +x introbot.py
+
 python3 introbot.py
+
+## Future ideas
+More administration powers to certain guild roles
+Certain guild roles would be capable of giving individual members temporary bans from their intros
+Certain guild roles would be capable of enabling or disabling intros for voice channels
