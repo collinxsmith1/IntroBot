@@ -58,7 +58,7 @@ async def on_voice_state_update(member, before, after):
             if before.self_mute == after.self_mute: # stops if member toggled mute
                 if not after.channel == None:
                     vchanid = after.channel.id
-                    v_ids = [] # Add voicechannel IDs to this list to enable them for the intro
+                    v_ids = [568612353613234190] # Add voicechannel IDs to this list to enable them for the intro
 
                     if vchanid in v_ids:
                         intpath = os.path.join(path, 'introdata/')
@@ -94,7 +94,7 @@ async def on_voice_state_update(member, before, after):
                         else:
                             mp3file = defaultmp3
                             
-                        tdelta = 10 # time threshold in seconds since users last intro
+                        tdelta = 3600 # time threshold in seconds since users last intro
                         readtime = itime - float(tdata)
                         
                         if tdelta <= readtime: # if time delta crosses threshold, then play intro

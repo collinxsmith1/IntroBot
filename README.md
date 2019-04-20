@@ -50,5 +50,7 @@ python3 introbot.py
 
 ## Future ideas
 More administration powers to certain guild roles
+
 Certain guild roles would be capable of giving individual members temporary bans from their intros
+
 Certain guild roles would be capable of enabling or disabling intros for voice channels
