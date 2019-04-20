@@ -11,7 +11,7 @@ import os
 
 import aiohttp
 import socket
-import aiofiles 
+import aiofiles
 
 path = os.getcwd()
 
@@ -21,7 +21,7 @@ with open(os.path.join(path,'../auth.json')) as auth:
 client = discord.Client()
 
 def RepresentsFloat(s):
-    try: 
+    try:
         float(s)
         return True
     except ValueError:
@@ -49,52 +49,56 @@ if not os.path.exists(os.path.join(path,'introdata')):
 @client.event
 async def on_voice_state_update(member, before, after):
 
+    buddy = str(member)
+    
     ### ANY CHANNEL Intro Tunes ###
 
     if not member.bot: # disregards any bots
         if before.self_deaf == after.self_deaf: # stops if member toggled deafen
             if before.self_mute == after.self_mute: # stops if member toggled mute
-                if not after.channel == None: # stops if member left a voicechannel
+                if not after.channel == None:
                     vchanid = after.channel.id
                     v_ids = [] # Add voicechannel IDs to this list to enable them for the intro
 
                     if vchanid in v_ids:
                         intpath = os.path.join(path, 'introdata/')
-                        intuser = os.path.join(intpath, str(member))
+                        intuser = os.path.join(intpath, buddy)
                         inttime = intuser + '_time.txt'
                         intvol = intuser + '_volume.txt'
                         intmp3 = intuser + '.mp3'
-                        defaultmp3 = intpath + '/defaultintro.mp3' # saving filepaths for user data
-
-                        itime = time.time() # time of intro
+                        defaultmp3 = intpath + '/defaultintro.mp3'
+                        itime = time.time()
                         
                         if os.path.exists(inttime):
-                            with open(inttime, "r") as bf: # reading from existing user time data
+                            with open(inttime, "r") as bf:
                                 tdata = bf.read()
                             if tdata == '':
                                 tdata = 0 # buddyintrotime has no information so tdata resorts to 0
                         else:
-                            with open(inttime, "w") as bf: # write new user time data
+                            print('create new inttime')
+                            with open(inttime, "w") as bf:
                                 bf.write(str(itime))
                             tdata = 0 # buddyintrotime didnt exist so tdata resorts to 0
 
                         if os.path.exists(intvol):
-                            with open(intvol, "r") as rv: # reading from existing user volume data
+                            with open(intvol, "r") as rv:
                                 voldata = rv.read()
                                 voldata = float(voldata)
                             if voldata == '':
                                 voldata = 0.25 # default intro volume
                         else:
-                            voldata = 0.25 # default intro volume is 25%
+                            voldata = 0.25
                             
-                        if os.path.exists(intmp3): # plays existing user intro mp3
+                        if os.path.exists(intmp3):
                             mp3file = intmp3
                         else:
-                            mp3file = defaultmp3 # if no user intro, plays the default tune
+                            mp3file = defaultmp3
                             
-                        tdelta = 3600 # time threshold in seconds since users last intro
+                        tdelta = 10 # time threshold in seconds since users last intro
                         readtime = itime - float(tdata)
-                        if tdelta <= readtime: # time threshold logic
+                        
+                        if tdelta <= readtime: # if time delta crosses threshold, then play intro
+
                             vc = await after.channel.connect()
                             mp3source = discord.FFmpegPCMAudio(mp3file)
                             mp3sourcetrans = discord.PCMVolumeTransformer(mp3source)
@@ -105,15 +109,15 @@ async def on_voice_state_update(member, before, after):
                                 await asyncio.sleep(1)
                             vc.stop()
                             await vc.disconnect()
-                            print('yes intro of:', str(member))
-                            
+
                             with open(inttime, "w") as bf:
                                 bf.write(str(itime))
+                            print('yes intro:', buddy)
                         else:
-                            print(' no intro of:', str(member))
+                            print(' no intro:', buddy)
     
 functionlist = ['~~~~~ IntroBot functions: ~~~~~',
-                '!patchnotes : see latest bot patchnotes',
+                '!patchnotes : see latest boct patchnotes',
                 '!rit : reset your intro timer (timer is set to 10 seconds for testing)',
                 '!changeintro : add .mp3 as message attachment to change your intro tune',
                 '!introvolume x : x = [0 < x <= 2.0] to change your intro volume (default = 0.25)'
@@ -133,7 +137,7 @@ async def on_message(message):
         patchmsg += "```"
         await message.channel.send(patchmsg)
     
-    if message.content == '!PatrickBot': # Change to name of the Bot using this script
+    if message.content == '!IntroBot': # Change to name of the Bot using this script
         funcmsg = "```"
         for function in functionlist:
             funcmsg += function + '\n'
