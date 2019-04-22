@@ -8,7 +8,7 @@ Change your intro volume
 Reset your intro timer
 
 ## Prerequisites
-Requires >= python3.5
+Requires >= python3.5, pip
 
 invite link:
 https://discordapp.com/api/oauth2/authorize?client_id=CLIENT-ID-HERE&permissions=3147776&scope=bot
@@ -37,6 +37,10 @@ python3 -m venv env
 source env/bin/activate
 
 pip install -r requirements.txt
+
+## Suggestions
+
+Configure a .gitignore for the created virtualenv folder
 
 ## Configure introbot.py for your discord servers
 v_ids should be list of voice channel IDs that you want intros enabled in
